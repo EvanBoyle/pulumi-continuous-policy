@@ -1,0 +1,14 @@
+{
+    "continuous-policy": {
+        "policies": [
+            {
+                "label": "No node12 labdas",
+                "query": ".runtime:nodejs12",
+                "assertion": {
+                    "operator": "eq",
+                    "value": 0
+                }
+            }
+        ]
+    }
+}
