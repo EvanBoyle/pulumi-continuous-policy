@@ -24,7 +24,7 @@ You'll need to specify the `continuous-policy` config:
                 "query": ".runtime:nodejs12",
                 "assertion": {
                     "operator": "eq",
-0                    "value": 0
+                    "value": 0
                 }
             }
         ]
