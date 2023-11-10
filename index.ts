@@ -9,6 +9,7 @@ export interface ContinuousPolicyAssertion {
 export interface ContinuousPolicyConfig {
     label: string;
     query: string;
+    mode: "query" | "ai";
     assertion: ContinuousPolicyAssertion;
 }
 
@@ -33,6 +34,10 @@ new PolicyPack("continuous-policy", {
                             },
                             query: {
                                 type: "string"
+                            },
+                            mode: {
+                                type: "string",
+                                enum: ["query", "ai"]
                             },
                             assertion: {
                                 type: "object",
@@ -65,11 +70,23 @@ new PolicyPack("continuous-policy", {
             };
 
             for (let p of config?.policies) {
-                const query = encodeURIComponent(p.query);
+
+                let query = "";
+                if (p.mode == "ai") {
+                    const body = await fetch(`https://api.pulumi.com/api/orgs/${pulumi.getOrganization()}/search/resources/parse?query=${encodeURIComponent(p.query)}`, {
+                        method: "GET",
+                        headers: headers,
+                    });
+                    const data = await body.json()
+                    query = encodeURIComponent(data.query);
+                } else {
+                    query = encodeURIComponent(p.query);
+                }
+
                 const body = await fetch(`https://api.pulumi.com/api/orgs/${pulumi.getOrganization()}/search/resources?query=${query}`, {
                     method: "GET",
                     headers: headers,
-                })
+                });
                 const data = await body.json()
                 const resultCount = data.total;
 

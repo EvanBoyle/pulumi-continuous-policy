@@ -3,7 +3,8 @@
         "policies": [
             {
                 "label": "No node12 labdas",
-                "query": ".runtime:nodejs12",
+                "mode": "ai",
+                "query": "nodejs version 12",
                 "assertion": {
                     "operator": "eq",
                     "value": 0
